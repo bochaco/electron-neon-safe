@@ -1,13 +1,13 @@
 {
-  "name": "electron-quick-start",
+  "name": "electron-neon-safe",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Hello SAFE! - Using electron on top of neon bridge for SAFE client Rust API",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-build-env neon build safe_nodejs --release"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/bochaco/electron-neon-safe.git",
   "keywords": [
     "Electron",
     "quick",
