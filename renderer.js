@@ -6,7 +6,7 @@ const APP_ID = "net.maidsafe.safe_browser";
 const APP_NAME = "SAFE Browser";
 const APP_VENDOR = "MaidSafe.net Ltd";
 
-const { Safe } = require('safe_nodejs');
+const { Safe } = require('safe-nodejs');
 
 let safe = new Safe();
 
@@ -14,7 +14,7 @@ console.log("Authorising application...");
 let auth_credentials = safe.auth_app(APP_ID, APP_NAME, APP_VENDOR);
 
 console.log("Connecting to the Network...");
-safe.connect("net.maidsafe.safe_nodejs", auth_credentials);
+safe.connect("net.maidsafe.safe-nodejs", auth_credentials);
 
 // FilesContainer create
 console.log("Creating FilesContainer...");
