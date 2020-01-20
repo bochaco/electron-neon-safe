@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-build-env neon build safe-nodejs --release",
-    "build-electron": "npm_config_target=6.0.7 npm_config_arch=x64 npm_config_disturl=https://electronjs.org/headers npm_config_runtime=electron neon build safe-nodejs --release"
+    "build-electron": "npm_config_target=6.1.4 npm_config_arch=x64 npm_config_disturl=https://electronjs.org/headers npm_config_runtime=electron neon build safe-nodejs --release"
   },
   "repository": "https://github.com/bochaco/electron-neon-safe.git",
   "keywords": [
@@ -19,11 +19,11 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^6.0.7",
+    "electron": "^6.1.4",
     "electron-build-env": "^0.2.0",
     "neon-cli": "^0.3.1"
   },
   "dependencies": {
-    "safe-nodejs": "git+https://github.com/maidsafe/safe-nodejs.git#0.2.4"
+    "safe-nodejs": "https://github.com/maidsafe/safe-nodejs.git#0.6.0"
   }
 }
