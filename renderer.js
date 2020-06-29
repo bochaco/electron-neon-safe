@@ -4,8 +4,8 @@
 
 const { SafeAuthdClient } = require('safe-nodejs');
 
-const APP_ID = "net.maidsafe.safe_browser";
-const APP_NAME = "SAFE Browser";
+const APP_ID = "net.maidsafe.safe-nodejs-user-example";
+const APP_NAME = "SAFE NodeJS User Example";
 const APP_VENDOR = "MaidSafe.net Ltd";
 
 const { Safe, XorUrlEncoder, SafeDataType, SafeContentType } = require('safe-nodejs');
@@ -19,11 +19,8 @@ console.log("Connecting to the Network...");
 safe.connect("net.maidsafe.safe-nodejs", auth_credentials);
 
 // XorUrlEncoder
-let random = Math.floor(Math.random() * Math.floor(1000));
-let nrs_url = `safe://mypubname-${random}`;
-console.log("Let's parse from NRS URL:", nrs_url);
 let xorname = Uint8Array.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2]);
-let xorurl_encoder = new XorUrlEncoder(xorname.buffer, 10000, SafeDataType.PublishedSeqAppendOnlyData, SafeContentType.FilesContainer, "/folder", ["sub1", "sub2"], 5);
+let xorurl_encoder = new XorUrlEncoder(xorname.buffer, null, 10000, SafeDataType.PublicSequence, SafeContentType.FilesContainer, "/folder", ["sub1", "sub2"], null, null, 5);
 console.log("XOR-URL generated:", xorurl_encoder);
 console.log("Encoding version:", xorurl_encoder.encoding_version());
 console.log("Xorname:", xorurl_encoder.xorname());
@@ -38,7 +35,7 @@ console.log("XOR-URL base64:", xorurl_encoder.to_base("base64"));
 
 // FilesContainer create
 console.log("Creating FilesContainer...");
-let files_container = safe.files_container_create("testfolder/", "", false, false);
+let files_container = safe.files_container_create("testfolder/", "", false, false, false);
 console.log("FilesContainer created: ", files_container);
 
 // FilesContainer get
@@ -47,7 +44,7 @@ console.log("Fetched FilesContainer content: ", safe_data);
 
 // FilesContainer sync
 console.log("Sync-ing FilesContainer...");
-safe.files_container_sync("testfolder/subfolder", files_container[0], false, false, false, false);
+safe.files_container_sync("testfolder/subfolder", files_container[0], false, false, false, false, false);
 safe_data = safe.files_container_get(files_container[0]);
 console.log("FilesContainer synced: ", safe_data);
 
@@ -64,24 +61,24 @@ safe.files_container_add_from_raw(raw_bytes, `${files_container[0]}/from-raw.md`
 safe_data = safe.files_container_get(files_container[0]);
 console.log("FilesContainer updated: ", safe_data);
 
-// PublishedImmutableData put
-console.log("Putting PublishedImmutableData...");
+// PublicImmutableData put
+console.log("Putting PublicImmutableData...");
 let buffer = Uint8Array.from([72, 101, 108, 108, 111, 32, 69, 108, 101, 99, 116, 114, 111, 110, 33, 33, 33, 10]);
-let immd_url = safe.files_put_published_immutable(buffer.buffer);
-console.log("PublishedImmutableData put: ", immd_url);
+let immd_url = safe.files_put_public_immutable(buffer.buffer, null, false);
+console.log("PublicImmutableData put: ", immd_url);
 
-// PublishedImmutableData get
-console.log("Let's fetch PublishedImmutableData from ", immd_url);
-safe_data = safe.files_get_published_immutable(immd_url);
-console.log("Fetched PublishedImmutableData content: ", safe_data);
+// PublicImmutableData get
+console.log("Let's fetch PublicImmutableData from ", immd_url);
+safe_data = safe.files_get_public_immutable(immd_url);
+console.log("Fetched PublicImmutableData content: ", safe_data);
 
 
 buffer = Buffer.from('Using Buffer.from');
-let idUrl = safe.files_put_published_immutable( buffer );
+let idUrl = safe.files_put_public_immutable(buffer, null, false);
 
-console.log("Let's fetch PublishedImmutableData from ", idUrl);
-safe_data = safe.files_get_published_immutable(idUrl);
-console.log("Fetched PublishedImmutableData content: ", safe_data);
+console.log("Let's fetch PublicImmutableData from ", idUrl);
+safe_data = safe.files_get_public_immutable(idUrl);
+console.log("Fetched PublicImmutableData content: ", safe_data);
 
 // Create an NRS public name
 random = Math.floor(Math.random() * Math.floor(1000));
@@ -105,6 +102,7 @@ console.log("Let's remove subname");
 nrs_map_data = safe.nrs_map_container_remove(`subname.${nrs_name}`, false);
 console.log("NRS Map Container updated: ", nrs_map_data);
 
+/*
 // Let's parse a URL
 console.log("Let's parse ", `safe://${nrs_name}`);
 let parsed_url = safe.parse_url(`safe://${nrs_name}`);
@@ -114,13 +112,14 @@ console.log("Parsed URL: ", parsed_url);
 console.log("Let's parse and resolve ", `safe://${nrs_name}`);
 parsed_url = safe.parse_and_resolve_url(`safe://${nrs_name}`);
 console.log("Parsed and resolved URL: ", parsed_url);
+*/
 
 let url = `${files_container[0]}/test.md`;
 console.log("Let's fetch content from ", url);
 
 safe_data = safe.fetch(url);
-if (safe_data.PublishedImmutableData) {
-  let str = String.fromCharCode.apply(null, safe_data.PublishedImmutableData.data);
+if (safe_data.PublicImmutableData) {
+  let str = String.fromCharCode.apply(null, safe_data.PublicImmutableData.data);
   console.log("Fetched content: ", str);
 }
 
@@ -128,8 +127,8 @@ let url_v0 = `${url}?v=0`;
 console.log("Let's fetch v0 of the content from ", url_v0);
 
 let safe_data_v0 = safe.fetch(url_v0);
-if (safe_data_v0.PublishedImmutableData) {
-  let str_v0 = String.fromCharCode.apply(null, safe_data_v0.PublishedImmutableData.data);
+if (safe_data_v0.PublicImmutableData) {
+  let str_v0 = String.fromCharCode.apply(null, safe_data_v0.PublicImmutableData.data);
   console.log("Fetched content: ", str_v0);
 }
 
@@ -137,8 +136,22 @@ let url_root = files_container[0];
 console.log("Let's fetch v0 of the content from ", url_root);
 
 let safe_data_root = safe.fetch(url_root);
-if (safe_data_root.PublishedImmutableData) {
+if (safe_data_root.PublicImmutableData) {
   console.log("I wasn't expecting that type of SafeData: ", safe_data_root);
 } else if (safe_data_root.FilesContainer){
   console.log("Fetched root raw content: ", safe_data_root);
 }
+
+/*
+// StoreSequence put
+console.log("Storing a PublicSequence...");
+let xorname = Uint8Array.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2]);
+let buffer = Uint8Array.from([72, 101, 108, 108, 111, 32, 69, 108, 101, 99, 116, 114, 111, 110, 33, 33, 33, 10]);
+let seq_url = safe.sequence_create(buffer.buffer, xorname, 11000, false);
+console.log("PublicSequence store: ", seq_url);
+
+// PublicSequence get
+console.log("Let's fetch PublicSequence from ", seq_url);
+safe_data = safe.sequence_get(seq_url);
+console.log("Fetched PublicSequence content: ", safe_data);
+*/
