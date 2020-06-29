@@ -142,16 +142,20 @@ if (safe_data_root.PublicImmutableData) {
   console.log("Fetched root raw content: ", safe_data_root);
 }
 
-/*
-// StoreSequence put
+// Store Sequence
 console.log("Storing a PublicSequence...");
-let xorname = Uint8Array.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2]);
-let buffer = Uint8Array.from([72, 101, 108, 108, 111, 32, 69, 108, 101, 99, 116, 114, 111, 110, 33, 33, 33, 10]);
-let seq_url = safe.sequence_create(buffer.buffer, xorname, 11000, false);
-console.log("PublicSequence store: ", seq_url);
+let seq_xorname = Uint8Array.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2]);
+let seq_data = Uint8Array.from([72, 101, 108, 108, 111, 32, 69, 108, 101, 99, 116, 114, 111, 110, 33, 33, 33, 10]);
+let seq_url = safe.sequence_create(seq_data, seq_xorname, 13000, false);
+console.log("PublicSequence stored: ", seq_url);
 
-// PublicSequence get
-console.log("Let's fetch PublicSequence from ", seq_url);
+// Get Sequence
+console.log("Let's fetch Sequence from ", seq_url);
 safe_data = safe.sequence_get(seq_url);
-console.log("Fetched PublicSequence content: ", safe_data);
-*/
+console.log("Fetched Sequence content: ", safe_data);
+
+// Sequence Append
+let seq_data2 = Uint8Array.from([10, 20, 30]);
+safe.sequence_append(seq_url, seq_data2);
+safe_data = safe.sequence_get(seq_url);
+console.log("Fetched new Sequence content: ", safe_data);

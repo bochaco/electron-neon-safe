@@ -1244,7 +1244,7 @@ safe-buffer@~5.1.0, safe-buffer@~5.1.1:
 
 "safe-nodejs@https://github.com/bochaco/safe-nodejs.git#adapt-to-safe-api-changes":
   version "0.11.6"
-  resolved "https://github.com/bochaco/safe-nodejs.git#09df9ac0a95d03ca37dde0e195ee73c2c9fc0fc1"
+  resolved "https://github.com/bochaco/safe-nodejs.git#211561224fb6cc7c8f1dc308654112abe666fc9c"
   dependencies:
     add "^2.0.6"
     neon-cli "^0.4.0"
